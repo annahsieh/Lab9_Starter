@@ -87,21 +87,106 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "0f1def3aabbd4dbeac7718abbd43e20e"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>  
+                          
+  <script>
+    class NoInputError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'EmptyInputError';
+      }
+    }
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        if (firstNum === '' || secondNum === '') {
+          throw new NoInputError('No input(s) provided');
+        }
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch (err) {
+        if(err instanceof NoInputError) {
+          alert(err.message);
+        }
+        else {
+          alert('Invalid input(s) to calculator');
+        }
+      }
+      finally {
+        alert('Operation complete');
+      }
     });
-
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+    errorBtns[0].addEventListener('click', event => {
+      console.log('Time to take a break');
+    });
+    errorBtns[1].addEventListener('click', event => {
+      console.error('Brain is fried');
+    });
+    errorBtns[2].addEventListener('click', event => {
+      console.count('sweet potato');
+    });
+    errorBtns[3].addEventListener('click', event => {
+      console.warn('Stay hydrated');
+    });
+    errorBtns[4].addEventListener('click', event => {
+      const foodIsGood = false;
+      const reason = 'food is always good';
+      console.assert(foodIsGood == true, {foodIsGood, reason});
+    });
+    errorBtns[5].addEventListener('click', event => {
+      console.clear();
+    });
+    errorBtns[6].addEventListener('click', event => {
+      console.dir(errorBtns);
+    });
+    errorBtns[7].addEventListener('click', event => {
+      console.dirxml(errorBtns);
+    });
+    const label = 'Weekday';
+    errorBtns[8].addEventListener('click', event => {
+      console.group(label);
+    });
+    errorBtns[9].addEventListener('click', event => {
+      console.groupEnd(label);
+    });
+    errorBtns[10].addEventListener('click', event => {
+      console.table([
+        { protein: 'chicken', vegetable: 'kale', carb: 'rice' },
+        { protein: 'salmon', vegetable: 'baby spinach', carb: 'sweet potato' },
+        { protein: 'steak', vegetable: 'bok choy', carb: 'butternut squash' }
+      ]);
+    });
+    errorBtns[11].addEventListener('click', event => {
+      console.time('Timer');
+    });
+    errorBtns[12].addEventListener('click', event => {
+      console.timeEnd('Timer');
+    });
+    errorBtns[13].addEventListener('click', event => {
+      const cream = () => { ice(); };
+      const ice = () => { matcha(); };
+      const matcha = () => { console.trace(); };
+      cream();
+    });
+    errorBtns[14].addEventListener('click', event => {
+      label = 'weekend';
+    });
+    window.onerror = function (msg, url, lineNo, columnNo, error) {
+      console.log(msg);
+    }
 
-    // Start your code here
-    // You may move this JS to another file if you wish
   </script>
 </body>
 
